@@ -1,0 +1,72 @@
+{
+  "name": "@sc/sc-devops",
+  "version": "1.0.0",
+  "scripts": {
+    "clean": "rm -rf abi artifacts build cache coverage docs coverage.json gas-report.html gas-report.txt",
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "check": "npx hardhat check",
+    "docgen": "npx hardhat docgen",
+    "size-contracts": "npx hardhat size-contracts",
+    "lint": "npm run lint:sol && npm run lint:js",
+    "lint:js": "npx eslint .",
+    "lint:js:fix": "npx eslint . --fix",
+    "lint:sol": "npx solhint -f table contracts/**/*.sol",
+    "lint:sol:fix": "npx solhint contracts/**/*.sol --fix",
+    "coverage": "npx hardhat coverage --network hardhat --solcoverjs ./.solcover.js",
+    "secret-scan": "pip3 install --user trufflehog3 && trufflehog3 --no-history -v",
+    "slither": "pip3 install --user slither-analyzer && slither .",
+    "mythx": "pip3 install --user mythx-cli && mythx --ci analyze ./contracts",
+    "mythril": "pip3 install --user mythril && ./utils/mythril-check.sh",
+    "gas-report": "env REPORT_GAS=true npm run test",
+    "prettier:check": "npx prettier --check .",
+    "prettier:write": "npx prettier --write ."
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.5",
+    "@nomiclabs/hardhat-etherscan": "^2.1.5",
+    "@nomiclabs/hardhat-ganache": "^2.0.1",
+    "@nomiclabs/hardhat-solhint": "^2.0.0",
+    "chai": "^4.3.4",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.1",
+    "eslint-plugin-promise": "^5.1.0",
+    "ethereum-waffle": "^3.4.0",
+    "hardhat": "^2.6.0",
+    "hardhat-deploy": "^0.8.11",
+    "hardhat-gas-reporter": "^1.0.4",
+    "prettier": "2.3.2",
+    "prettier-plugin-solidity": "^1.0.0-beta.17",
+    "solhint": "^3.3.6",
+    "solhint-plugin-prettier": "^0.0.5",
+    "solidity-coverage": "^0.7.16"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-verify": "^1.1.0",
+    "@openzeppelin/contracts": "^5.0.0",
+    "@openzeppelin/contracts-upgradeable": "^5.0.0",
+    "@openzeppelin/hardhat-upgrades": "^2.4.3",
+    "@openzeppelin/upgrades-core": "^1.31.3",
+    "ansi-to-html": "^0.7.1",
+    "conventional-changelog-conventionalcommits": "^4.6.0",
+    "dotenv": "^10.0.0",
+    "ethers": "^6.9.0",
+    "hardhat-abi-exporter": "^2.2.1",
+    "hardhat-contract-sizer": "^2.0.3",
+    "hardhat-docgen": "^1.1.1",
+    "hardhat-preprocessor": "^0.1.4",
+    "hardhat-watcher": "^2.1.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "/contracts/**/*.sol",
+    "/artifacts/**/*",
+    "!/contracts/mocks/**/*"
+  ]
+}
