@@ -31,7 +31,7 @@ contract MultiSigAdministration {
         _;
     }
 
-    function constructor(
+    constructor(
         address[] memory _owners,
         uint256 _quorum
     ) public validRequirement(_owners.length, _quorum) {
