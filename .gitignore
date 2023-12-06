@@ -1,10 +1,12 @@
 build/
 cache/
 node_modules/
+artifacts/
 
 *.env
 coverage.json
 gas-report.html
 gas-report.txt
+yarn.lock
 *.secret
 *.secrets
