@@ -30,7 +30,17 @@ async function deployFactory() {
     return mltsgFactoryProxy;
 }
 
+async function deployMyToken(name, symbol, decimal, totalSupply) {
+    const signers = await ethers.getSigners();
+    const myToken = await ethers.deployContract("MyToken", [name, symbol, decimal, totalSupply]);
+    const myTokenAddress = await myToken.getAddress();
+    console.log("MyToken is deployed to:", myTokenAddress);
+
+    return myToken;
+}
+
 module.exports = {
     deployMultiSig,
     deployFactory,
+    deployMyToken,
 };
