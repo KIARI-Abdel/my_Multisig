@@ -2,12 +2,6 @@
 pragma solidity ^0.8.9;
 
 
-/**
- * @title Multi-Signature Utilities Library
- * @dev Provides utility functions for multi-signature contract operations.
- * @notice This library includes functions for array manipulation and data hashing, 
- *         specifically designed to support multi-signature contract functionalities.
- */
 library MultiSigUtils {
     function arrayContainsString(string[] memory arrayToCheck, string memory searchedString) internal pure returns (bool result) {
         for (uint256 i = 0; i < arrayToCheck.length; i++) {
@@ -19,6 +13,15 @@ library MultiSigUtils {
     function arrayContainsAddress(address[] memory arrayToCheck, address searchedAddress) internal pure returns (bool) {
         for (uint256 i = 0; i < arrayToCheck.length; i++) {
             if (arrayToCheck[i] == searchedAddress) return true;
+        }
+        return false;
+    }
+
+    function arrayContainsBytes32(bytes32[] memory arrayToCheck, bytes32 searchedBytes32) internal pure returns (bool) {
+        for (uint256 i = 0; i < arrayToCheck.length; i++) {
+            if (arrayToCheck[i] == searchedBytes32) {
+                return true;
+            }
         }
         return false;
     }
