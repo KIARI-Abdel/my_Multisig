@@ -3,31 +3,22 @@ const { ethers } = require("hardhat");
 async function deployMultiSig(masterAddress, ownersAddress, quorum) {
     const MultiSig = await ethers.getContractFactory("MultiSigMaster");
 
-    const mltsgProxy = await upgrades.deployProxy(
-        MultiSig,
-        [masterAddress, ownersAddress, quorum],
-        {
-            initializer: "initialize(address, address[],uint256)",
-        },
-        {
-            gas: 1000000,
-            gasPrice: 100,
-        }
+    const mltsgContract = await ethers.deployContract(
+        "MultiSigMaster",
+        [masterAddress, ownersAddress, quorum]
     );
-    const mlstgAddress = await mltsgProxy.getAddress()
-    console.log("Multi-Sig Master proxy is deployed to:", mlstgAddress);
+    const mlstgAddress = await mltsgContract.getAddress()
+    console.log("Multi-Sig Master is deployed to:", mlstgAddress);
 
-    return mltsgProxy;
+    return mltsgContract;
 }
 
 async function deployFactory() {
-    const mltsgFactory = await ethers.getContractFactory("MultiSigFactory");
+    const mltsgFactoryContract = await ethers.deployContract("MultiSigFactory");
+    const mltsgFactoryAddress = await mltsgFactoryContract.getAddress();
+    console.log("Multi-Sig Factory is deployed to:", mltsgFactoryAddress);
 
-    const mltsgFactoryProxy = await upgrades.deployProxy(mltsgFactory);
-    const mltsgFactoryAddress = await mltsgFactoryProxy.getAddress();
-    console.log("Multi-Sig Factory proxy is deployed to:", mltsgFactoryAddress);
-
-    return mltsgFactoryProxy;
+    return mltsgFactoryContract;
 }
 
 async function deployMyToken(name, symbol, decimal, totalSupply) {

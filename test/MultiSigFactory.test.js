@@ -39,9 +39,9 @@ describe("Hardhat tests of the MultiSig Factory", function () {
             it("CreateMultiSig and verify through all get functions: ", async function () {
                 let res = await factory.createMultiSigAdministration(owners, quorum);
                 tx = await res.wait();
-                let event1 = tx.logs[1].fragment.name;
-                let event2 = tx.logs[2].fragment.name;
-                let instance1 = tx.logs[2].args[0];
+                let event1 = tx.logs[0].fragment.name;
+                let event2 = tx.logs[1].fragment.name;
+                let instance1 = tx.logs[1].args[0];
                 assert.equal(event1, "ContractInstantiation");
                 assert.equal(event2, "MultiSigAdministrationCreation");
 
