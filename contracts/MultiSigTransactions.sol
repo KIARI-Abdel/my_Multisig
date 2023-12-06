@@ -80,6 +80,10 @@ contract MultiSigTransaction is MultiSigAdministration {
         deposit();
     }
 
+    receive() external payable {
+        deposit();
+    }
+    
     function setTokenContractAddress(address tokenContractAddress) public requireOwnerExists(msg.sender) {
         MyTokenContract = IERC20(tokenContractAddress);
     }
@@ -210,5 +214,60 @@ contract MultiSigTransaction is MultiSigAdministration {
             }
         }
         return res;
+    }
+
+    function getUserConfirmationStatus(uint256 transactionId, address owner) external returns (bool) {
+        hashId = idToHashes[transactionId];
+        require(MultiSigUtils.arrayContainsBytes32(hashesId, hashId), "No transaction found associated with this Id");
+        uint256 res = confirmations[hashId][owner];
+        if (res == 1) return true;
+        return false;
+    }
+
+
+    function getConfirmationCount(uint256 transactionId) external returns (uint256 count) {
+        hashId = idToHashes[transactionId];
+        require(MultiSigUtils.arrayContainsBytes32(hashesId, hashId), "No transaction found associated with this Id");
+        for (uint256 i = 0; i < owners.length; i++) if (confirmations[hashId][owners[i]] == 1) count += 1;
+    }
+
+    function getRevocationCount(uint256 transactionId) external returns (uint256 count) {
+        hashId = idToHashes[transactionId];
+        require(MultiSigUtils.arrayContainsBytes32(hashesId, hashId), "No transaction found associated with this Id");
+        for (uint256 i = 0; i < owners.length; i++) if (confirmations[hashId][owners[i]] == 2) count += 1;
+    }
+
+    function getTransactionCount() external view returns (uint256 count) {
+        count = transactionCount;
+    }
+
+    function getConfirmations(uint256 transactionId) external returns (address[] memory _confirmations) {
+        hashId = idToHashes[transactionId];
+        require(MultiSigUtils.arrayContainsBytes32(hashesId, hashId), "No transaction found associated with this Id");
+        address[] memory confirmationsTemp = new address[](owners.length);
+        uint256 count = 0;
+        uint256 i;
+        for (i = 0; i < owners.length; i++)
+            if (confirmations[hashId][owners[i]] == 1) {
+                confirmationsTemp[count] = owners[i];
+                count += 1;
+            }
+        _confirmations = new address[](count);
+        for (i = 0; i < count; i++) _confirmations[i] = confirmationsTemp[i];
+    }
+
+    function getRevocations(uint256 transactionId) external returns (address[] memory _confirmations) {
+        hashId = idToHashes[transactionId];
+        require(MultiSigUtils.arrayContainsBytes32(hashesId, hashId), "No transaction found associated with this Id");
+        address[] memory confirmationsTemp = new address[](owners.length);
+        uint256 count = 0;
+        uint256 i;
+        for (i = 0; i < owners.length; i++)
+            if (confirmations[hashId][owners[i]] == 2) {
+                confirmationsTemp[count] = owners[i];
+                count += 1;
+            }
+        _confirmations = new address[](count);
+        for (i = 0; i < count; i++) _confirmations[i] = confirmationsTemp[i];
     }
 }
