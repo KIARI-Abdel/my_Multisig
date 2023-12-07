@@ -26,8 +26,7 @@ contract MultiSigTest is Test {
     /// @dev A function invoked before each test case is run.
     function setUp() public virtual {
         // Instantiate the contract-under-test.
-        mltsg = new MultiSigAdministration();
-        mltsg.initialize(owners, quorum);
+        mltsg = new MultiSigAdministration(owners, quorum);
     }
 
     function test_getQuorum() public {
